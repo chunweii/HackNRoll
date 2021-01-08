@@ -1,5 +1,4 @@
 const bg = chrome.extension.getBackgroundPage()
-
 let addToWhitelist = document.getElementById('addToWhitelist');
 let clearButton = document.getElementById('clearButton');
 let startButton = document.getElementById('startButton');
@@ -10,6 +9,12 @@ let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
 let isRunning = false;
 let interval;
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    hours.innerText = Math.floor(bg.timerTime/3600);
+    minutes.innerText = Math.floor((bg.timerTime % 3600)/60);
+    seconds.innerText = bg.timerTime % 60;
+})
 
 addToWhitelist.onclick = function (element) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -54,7 +59,8 @@ stopButton.onclick = function stopTimer() {
 }
 
 resetButton.onclick = function resetTimer() {
-    bg.timerTime         = 0;
+    bg.timerTime = 0;
+    hours.innerText = '00';
     minutes.innerText = '00';
     seconds.innerText = '00';
 }
