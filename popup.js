@@ -6,7 +6,7 @@ let resetButton = document.getElementById('resetButton');
 let hours = document.querySelector('.hours');
 let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
-let timerTime = 86395;
+let timerTime = 0;
 let isRunning = false;
 let interval;
 
