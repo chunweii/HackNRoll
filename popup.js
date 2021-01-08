@@ -16,8 +16,16 @@ addToWhitelist.onclick = function (element) {
         if (query === "") {
             addToWhitelist.innerText = "No Playlist";
         } else {
-            chrome.storage.sync.set({[query] : 1}, () => console.log("Added " + query));
-            addToWhitelist.innerText = "Playlist is added";
+            chrome.storage.sync.get("whitelistOfPlaylists", (items) => {
+                if (items.whitelistOfPlaylists.includes(query)) {
+                    addToWhitelist.innerText = "Playlist exists on whitelist.";
+                    return;
+                }
+                chrome.storage.sync.set({ whitelistOfPlaylists: [...items.whitelistOfPlaylists, query]}, () => {
+                    addToWhitelist.innerText = "Playlist is added";
+                });
+            });
+            
         }
         chrome.storage.sync.get(null, (items) => {
             console.log(items);
@@ -27,11 +35,8 @@ addToWhitelist.onclick = function (element) {
 };
 
 clearButton.onclick = function (element) {
-    chrome.storage.sync.clear(() => {
+    chrome.storage.sync.set({whitelistOfPlaylists: []}, () => {
         console.log("Cleared.");
-        chrome.storage.sync.get(null, (items) => {
-            console.log(items);
-        });
     });
 }
 

@@ -10,6 +10,8 @@ window.blacklist = [
 window.whitelist=[];
 
 chrome.runtime.onInstalled.addListener(function () {
+    chrome.storage.sync.set({whitelistOfPlaylists: []});
+
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
         // current session
         chrome.declarativeContent.onPageChanged.addRules([{
