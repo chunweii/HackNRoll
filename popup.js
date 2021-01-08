@@ -1,17 +1,27 @@
-let changeColor = document.getElementById('changeColor');
+let addToWhitelist = document.getElementById('addToWhitelist');
+let clearButton = document.getElementById('clearButton');
 
-chrome.storage.sync.get('color', function (data) {
-    changeColor.style.backgroundColor = data.color;
-    changeColor.setAttribute('value', data.color);
-});
-
-changeColor.onclick = function (element) {
-    let color = element.target.value;
+addToWhitelist.onclick = function (element) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        changeColor.innerText = (new URL(tabs[0].url)).searchParams.get("list") || "No Playlist";
-        chrome.tabs.executeScript(
-            tabs[0].id,
-            { code: 'document.body.style.backgroundColor = "' + color + '";' });
+        let query = (new URL(tabs[0].url)).searchParams.get("list");
+        if (query === "") {
+            addToWhitelist.innerText = "No Playlist";
+        } else {
+            chrome.storage.sync.set({[query] : 1}, () => console.log("Added " + query));
+            addToWhitelist.innerText = "Playlist is added";
+        }
+        chrome.storage.sync.get(null, (items) => {
+            console.log(items);
+        });
     });
     
 };
+
+clearButton.onclick = function (element) {
+    chrome.storage.sync.clear(() => {
+        console.log("Cleared.");
+        chrome.storage.sync.get(null, (items) => {
+            console.log(items);
+        });
+    });
+}
