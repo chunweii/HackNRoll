@@ -8,6 +8,10 @@
             width: 300px;
             outline: none;
         }
+        .timer{
+            font-size: 40px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -15,6 +19,20 @@
     Hello YouTube
     <button id="addToWhitelist">Add to whitelist</button>
     <button id="clearButton">Clear Whitelist</button>
+    <div class="timer">
+        <span class="hours">00</span> : <span class="minutes">00</span> : <span class="seconds">00</span>
+    </div>
+    <div class="timer-buttons">
+        <button id="startButton" class="btn btn-lg btn-success">
+            Start
+        </button>
+        <button id="stopButton" class="btn btn-lg btn-danger">
+            Stop
+        </button>
+        <button id="resetButton" class="btn btn-link btn-block">
+            Reset
+        </button>
+    </div>
     <script src="popup.js"></script>
 </body>
 
