@@ -1,7 +1,7 @@
 // runs when extension installed
-
-window.youtubeTime = 0;
-window.redditTime = 0;
+window.timerTime = 0
+// window.youtubeTime = 0;
+// window.redditTime = 0;
 window.blacklist = [
     /^https:\/\/www\.youtube\.com\/watch\?v=/,
     /^https:\/\/www\.reddit\.com/
