@@ -4,7 +4,7 @@
   "description": "Tracks how much time you are watching YouTube!",
   "background": {
     "scripts": ["background.js"],
-    "persistent": false
+    "persistent": true
   },
   "options_page": "options.html",
   "permissions": ["activeTab", "declarativeContent", "storage", "tabs"],

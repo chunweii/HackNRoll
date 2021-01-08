@@ -8,7 +8,6 @@ window.blacklist = [
     /^https:\/\/www\.youtube\.com\/watch\?v=/,
     /^https:\/\/www\.reddit\.com/
 ];
-
 window.whitelist=[];
 
 chrome.runtime.onConnect.addListener(function(port) {
@@ -64,7 +63,7 @@ chrome.runtime.onInstalled.addListener(function () {
         chrome.declarativeContent.onPageChanged.addRules([{
             // which pages our extension is available in
             conditions: [new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { hostEquals: 'www.youtube.com' },
+                pageUrl: { hostEquals: 'www.youtube.com' }, 
             })
             ],
             actions: [new chrome.declarativeContent.ShowPageAction()]
@@ -77,8 +76,42 @@ chrome.tabs.onActivated.addListener(tab => {
         for(let i = 0; i < window.blacklist.length; i = i + 1){
             if (window.blacklist[i].test(current_tab_info.url)){ 
                 // checks if tab is in blacklist and executes handleBlacklist.js
-                chrome.tabs.executeScript(null, {file: './handleBlacklist.js'}, () => console.log("handling blacklist"));
+                // chrome.tabs.executeScript(null, {file: './handleBlacklist.js'}, () => console.log("handling blacklist"));
+                handleBlacklist();
+                return;
             } 
         }
+        return handleWhiteList();
     });
 })
+
+function handleBlacklist(){
+    console.log("handling blacklist");
+    function startTimer() {
+        if(!isRunning){
+            console.log("start timer")
+            interval  = setInterval(incrementTimer, 1000);
+            isRunning = true;
+        }
+    }
+    function incrementTimer() {
+        state["time"] = state["time"] + 1;
+    }
+    // function resetTimer() {
+    //     bg.timerTime = 0;
+    // }
+    
+    startTimer();
+}
+
+function handleWhiteList(){
+    console.log("handling whitelist")
+    function stopTimer() {
+        if(isRunning){
+            console.log("stop timer")
+            clearInterval(interval);
+            isRunning = false;
+        }
+    }
+    stopTimer();
+}

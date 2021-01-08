@@ -1,3 +1,5 @@
+const bg = chrome.extension.getBackgroundPage()
+// bg variables: isRunning, timerTime
 let addToWhitelist = document.getElementById('addToWhitelist');
 let clearButton = document.getElementById('clearButton');
 let startButton = document.getElementById('startButton');
