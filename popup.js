@@ -82,9 +82,7 @@ function pad(number) {
     return (number < 10) ? '0' + number : number;
 }
 
-hours.innerText = pad(Math.floor(bg.timerTime/3600));
-minutes.innerText = pad(Math.floor((bg.timerTime % 3600)/60));
-seconds.innerText = pad(bg.timerTime % 60);
+
 
 
 
