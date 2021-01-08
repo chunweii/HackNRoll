@@ -1,3 +1,5 @@
+const bg = chrome.extension.getBackgroundPage()
+
 let addToWhitelist = document.getElementById('addToWhitelist');
 let clearButton = document.getElementById('clearButton');
 let startButton = document.getElementById('startButton');
@@ -6,7 +8,6 @@ let resetButton = document.getElementById('resetButton');
 let hours = document.querySelector('.hours');
 let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
-let timerTime = 0;
 let isRunning = false;
 let interval;
 
@@ -53,7 +54,7 @@ stopButton.onclick = function stopTimer() {
 }
 
 resetButton.onclick = function resetTimer() {
-    timerTime         = 0;
+    bg.timerTime         = 0;
     minutes.innerText = '00';
     seconds.innerText = '00';
 }
@@ -63,17 +64,17 @@ function pad(number) {
 }
 
 function incrementTimer() {
-    if (timerTime == 86399) {
-        timerTime = 0;
+    if (bg.timerTime == 86399) {
+        bg.timerTime = 0;
         alert("24 hours have passed. Please restart your timer");
         stopButton.click();
         resetButton.click();
     } else {
-        timerTime++;
+        bg.timerTime++;
     }   
-    const numberOfHours = Math.floor(timerTime/3600);
-    const numberOfMinutes = Math.floor((timerTime % 3600)/60);
-    const numberOfSeconds = timerTime % 60;
+    const numberOfHours = Math.floor(bg.timerTime/3600);
+    const numberOfMinutes = Math.floor((bg.timerTime % 3600)/60);
+    const numberOfSeconds = bg.timerTime % 60;
     hours.innerText = pad(numberOfHours);
     minutes.innerText = pad(numberOfMinutes);
     seconds.innerText = pad(numberOfSeconds);
