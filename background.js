@@ -10,10 +10,6 @@ window.blacklist = [
 window.whitelist=[];
 
 chrome.runtime.onInstalled.addListener(function () {
-    // chrome.storage.sync.set({ color: '#3aa757' }, function () {
-    //     console.log("The color is green.");
-    // });
-    // clears past set declarative content (including previous sessions)
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
         // current session
         chrome.declarativeContent.onPageChanged.addRules([{
