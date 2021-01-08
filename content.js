@@ -5,11 +5,11 @@
 // alert("This extension logs your youtube time")
 
 // content.js
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.message === "clicked_browser_action") {
-      console.log("The URL is " + window.location.href)
-    }
+chrome.tabs.onRemoved.addListener(
+  function(tabId,removeInfo) {
+    chrome.runtime.sendMessage({ warning: "tab closing" }, function (response) {
+      console.log(response.farewell);
+    });
   }
 )
                                      

@@ -6,9 +6,8 @@ let resetButton = document.getElementById('resetButton');
 let hours = document.querySelector('.hours');
 let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
-let timerTime = 0;
-let isRunning = false;
-let interval;
+
+let port = chrome.runtime.connect({name: "timer"});
 
 addToWhitelist.onclick = function (element) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -41,19 +40,16 @@ clearButton.onclick = function (element) {
 }
 
 startButton.onclick = function startTimer() {
-    if (isRunning) return;
-    isRunning = true;
-    interval  = setInterval(incrementTimer, 1000);
+    port.postMessage({timer : "start"});
 }
 
 stopButton.onclick = function stopTimer() {
-    if (!isRunning) return;
-    isRunning = false;
-    clearInterval(interval);
+    port.postMessage({ timer: "stop" });
 }
 
 resetButton.onclick = function resetTimer() {
-    timerTime         = 0;
+    port.postMessage({timer : "reset"})
+    hours.innerText = '00';
     minutes.innerText = '00';
     seconds.innerText = '00';
 }
@@ -62,19 +58,19 @@ function pad(number) {
     return (number < 10) ? '0' + number : number;
 }
 
-function incrementTimer() {
-    if (timerTime == 86399) {
-        timerTime = 0;
-        alert("24 hours have passed. Please restart your timer");
-        stopButton.click();
-        resetButton.click();
-    } else {
-        timerTime++;
-    }   
-    const numberOfHours = Math.floor(timerTime/3600);
-    const numberOfMinutes = Math.floor((timerTime % 3600)/60);
-    const numberOfSeconds = timerTime % 60;
+function stopwatchUpdate(newTime) {
+    const numberOfHours = Math.floor(newTime/3600);
+    const numberOfMinutes = Math.floor((newTime % 3600)/60);
+    const numberOfSeconds = Math.floor(newTime % 60);
     hours.innerText = pad(numberOfHours);
     minutes.innerText = pad(numberOfMinutes);
     seconds.innerText = pad(numberOfSeconds);
 }
+
+port.onMessage.addListener(
+    function (message) {
+        if (message.newTime) {
+            stopwatchUpdate(message.newTime);
+        }
+    }
+)
