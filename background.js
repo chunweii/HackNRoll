@@ -3,8 +3,8 @@
 window.youtubeTime = 0;
 window.redditTime = 0;
 window.blacklist = [
-    /^https:\/\/www\.youtube\.com\/watch\?v=*/,
-    /^https:\/\/www\.reddit\.com\/*/
+    /^https:\/\/www\.youtube\.com\/watch\?v=/,
+    /^https:\/\/www\.reddit\.com/
 ];
 
 window.whitelist=[];
@@ -33,11 +33,7 @@ chrome.tabs.onActivated.addListener(tab => {
             if (window.blacklist[i].test(current_tab_info.url)){ 
                 // checks if tab is in blacklist and executes handleBlacklist.js
                 chrome.tabs.executeScript(null, {file: './handleBlacklist.js'}, () => console.log("handling blacklist"));
-            } else {
-                // productive tab
-                return;
-            }
-            
+            } 
         }
     });
 })
