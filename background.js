@@ -4,14 +4,22 @@ window.blacklist = [
 ];
 window.whitelist=[];
 
-fakeData = {
-    "time": 69
-}
-window.time = fakeData["time"]
+var startTime = chrome.storage.sync.get(['time'], function(result) {
+    console.log('Value currently is ' + result.key);
+  });
+
+if(!startTime){
+    chrome.storage.sync.set({'time': 0}, function() {
+        console.log('Value is set to 0');
+      });
+    startTime = 0;
+} 
+window.time = startTime;
+
 let isRunning = false;
 let interval;
 let state = {
-    "time": 69
+    "time": startTime
 }
 
 // handles saving to json file
@@ -21,7 +29,9 @@ let timerHandler = {
           obj[prop] = value
           console.log("state change" + state["time"])
           window.time = state["time"] //update window
-          fakeData["time"] = value; //to sub with chrome storage
+          chrome.storage.sync.set({'time': value}, function() {
+            console.log('Value is set to ' + value);
+          }); //to sub with chrome storage
           chrome.runtime.sendMessage({
             msg: "time", 
             data: {
