@@ -6,7 +6,7 @@ let resetButton = document.getElementById('resetButton');
 let hours = document.querySelector('.hours');
 let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
-let timerTime = 0;
+let timerTime = 86395;
 let isRunning = false;
 let interval;
 
@@ -58,7 +58,14 @@ function pad(number) {
 }
 
 function incrementTimer() {
-    timerTime++;
+    if (timerTime == 86399) {
+        timerTime = 0;
+        alert("24 hours have passed. Please restart your timer");
+        stopButton.click();
+        resetButton.click();
+    } else {
+        timerTime++;
+    }   
     const numberOfHours = Math.floor(timerTime/3600);
     const numberOfMinutes = Math.floor((timerTime % 3600)/60);
     const numberOfSeconds = timerTime % 60;
