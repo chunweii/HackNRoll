@@ -90,49 +90,18 @@ chrome.runtime.onInstalled.addListener(function () {
     });
 });
 
-
-
-// Activated.addListener(tab => {
-// s.get(tab.tabId, current_tab_info =>{
-// t i = 0; i < window.blacklist.length; i = i + 1){
-//  (window.blacklist[i].test(current_tab_info.url)){ 
-//   // checks if tab is in blacklist and executes handleBlacklist.js
-//   // chrome.tabs.executeScript(null, {file: './handleBlacklist.js'}, () => console.log("handling blacklist"));
-//   handleBlacklist();
-//   return;
-// 
-// 
-//  handleWhiteList();
-// 
-// 
-// 
-// eBlacklist(){
-// g("handling blacklist");
-// tartTimer() {
-// Running){
-// nsole.log("start timer")
-// terval  = setInterval(incrementTimer, 1000);
-// Running = true;
-// 
-// 
-// ncrementTimer() {
-// "time"] = state["time"] + 1;
-// 
-// n resetTimer() {
-// timerTime = 0;
-// 
-// 
-// ();
-// 
-// 
-// eWhiteList(){
-// g("handling whitelist")
-// topTimer() {
-// unning){
-// nsole.log("stop timer")
-// earInterval(interval);
-// Running = false;
-// 
-// 
-// );
-// 
+chrome.tabs.onActivated.addListener(tab => {
+    chrome.tabs.get(tab.tabId, current_tab_info =>{
+        for(let i = 0; i < window.blacklist.length; i = i + 1){
+            if (window.blacklist[i].test(current_tab_info.url)){ 
+                // checks if tab is in blacklist and executes handleBlacklist.js
+                // chrome.tabs.executeScript(null, {file: './handleBlacklist.js'}, () => console.log("handling blacklist"));
+                chrome.runtime.sendMessage({ warning: "blacklist" }, function (response) {
+                });
+                return;
+            } 
+        }
+        chrome.runtime.sendMessage({ warning: "whitelist" }, function (response) {
+        });
+    });
+})

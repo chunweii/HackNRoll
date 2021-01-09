@@ -79,3 +79,18 @@ port.onMessage.addListener(
         }
     }
 )
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if (request.warning == "blacklist") {
+        startButton.click();
+        sendResponse({farewell: "black start"});
+    } else if (request.warning == "whitelist") {
+        stopButton.click();
+        sendResponse({farewell: "white end"});
+    }
+  }
+);

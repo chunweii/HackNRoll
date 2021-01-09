@@ -12,4 +12,24 @@ chrome.tabs.onRemoved.addListener(
     });
   }
 )
-                                     
+
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let url = (new URL(tabs[0].url)).hostname;
+        if (query === "") {
+            addToWhitelist.innerText = "No Playlist";
+        } else {
+            chrome.storage.sync.get("whitelistOfPlaylists", (items) => {
+                if (items.whitelistOfPlaylists.includes(query)) {
+                    addToWhitelist.innerText = "Playlist exists on whitelist.";
+                    return;
+                }
+                chrome.storage.sync.set({ whitelistOfPlaylists: [...items.whitelistOfPlaylists, query]}, () => {
+                    addToWhitelist.innerText = "Playlist is added";
+                });
+            });
+            
+        }
+        chrome.storage.sync.get(null, (items) => {
+            console.log(items);
+        });
+    });
