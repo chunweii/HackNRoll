@@ -74,5 +74,8 @@ port.onMessage.addListener(
         if (message.newTime) {
             stopwatchUpdate(message.newTime);
         }
+        else if (message.warning == "tab closing") {
+            port.disconnect();
+        }
     }
 )
